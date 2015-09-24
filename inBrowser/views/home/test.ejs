@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>test</title>
+	<link rel="stylesheet" href="/css/test.css">
+</head>
+<body>
+	<div class="main">
+		<div class="header">
+			<span>热门搜索</span>
+			<a href="javascript:void(0);" id="fresh"><img  src="/images/fresh.png"></a>
+		</div>
+		<div class="container">
+			<div id="hot_search"></div>
+		</div>
+		
+	</div>
+	<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+
+	<script>
+	function getRandomColor(){
+        return  '#' +
+          (function(color){
+          return (color +=  '89abcd'[Math.floor(Math.random()*6)])
+            && (color.length == 6) ?  color : arguments.callee(color);
+        })('');
+    }
+	function createArray(){
+		var a = [[2,2,3],[3,2,2],[2,3,2]];
+		return a[Math.floor(Math.random()*3)];
+	}
+	function randomS () {
+		return (6 + Math.floor(Math.random()*6)) /10;
+	}
+	function tpl(str, c) {
+		c = c || 1;
+		var color = getRandomColor();
+		return '<div class="col-'+c+'"><a style="animation-duration:'+randomS()+'s;background-color:'+color+'" href="javascript:void(0);">'+str+'</a></div>';
+	} 
+	$("#fresh").on("click",function(){
+		getLabel();
+	});
+	getLabel();
+	function getLabel (){
+		$.ajax({
+			type:"post",
+			url:"/json1",
+			dataType:"json",
+			success:function(data){
+				var rule = createArray();
+				var t ='';
+				$.each(rule, function(a, b){
+					t+='<div class="row">';
+					var c,e,
+						d = [1,2];
+					for (var i = 0; i < b; i++) {
+						if (b === 2){
+							switch(i){
+								case 0:
+									c = d[Math.floor(Math.random()*2)];
+									e = c;
+								break;
+								case 1:
+									c = 3-e;
+									break;
+							}	
+						}else{
+							c = 1;
+						}
+						t += tpl(data.info.shift(), c);
+					};
+					t+= '</div>';
+				});
+				$('#hot_search').html(t);
+			}
+		})
+	}
+	</script>
+</body>
+</html>

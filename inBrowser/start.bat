@@ -1,0 +1,1 @@
+SET DEBUG=inBrowser:* & npm start
